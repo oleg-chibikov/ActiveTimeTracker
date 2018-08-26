@@ -20,11 +20,16 @@ namespace ActivityTimeTracker.Contracts.Data
             Period = End != null ? End.Value - Start : (TimeSpan?)null;
         }
 
-        public PeriodType PeriodType { get; }
-        public DateTime Start { get; }
         public DateTime? End { get; }
-        public int StartEventId { get; }
-        public TimeSpan? Period { get; }
+
         public bool IsSuppressed { get; }
+
+        public TimeSpan? Period { get; }
+
+        public PeriodType PeriodType { get; }
+
+        public DateTime Start { get; }
+
+        public int StartEventId { get; }
     }
 }

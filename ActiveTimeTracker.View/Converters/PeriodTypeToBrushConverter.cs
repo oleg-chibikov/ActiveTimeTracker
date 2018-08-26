@@ -10,7 +10,7 @@ namespace ActiveTimeTracker.View.Converters
     [ValueConversion(typeof(PeriodType), typeof(Color))]
     internal sealed class PeriodTypeToBrushConverter : IValueConverter
     {
-        //TODO: Gray color for suppressed. PeriodInfoViewModel class!
+        // TODO: Gray color for suppressed. PeriodInfoViewModel class!
         [NotNull]
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -54,6 +54,15 @@ namespace ActiveTimeTracker.Core
             return reportPath;
         }
 
+        private static void AutoSizeRow([NotNull] IRow row, [NotNull] ISheet sheet)
+        {
+            var numberOfColumns = row.PhysicalNumberOfCells;
+            for (var i = 0; i <= numberOfColumns; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+        }
+
         [NotNull]
         private static ICellStyle CreateBoldStyle([NotNull] IWorkbook wb)
         {
@@ -66,34 +75,24 @@ namespace ActiveTimeTracker.Core
             return boldStyle;
         }
 
-        [NotNull]
-        private static ICellStyle CreateTimeCellStyle([NotNull] IWorkbook wb)
+        private static void CreateHeader([NotNull] ISheet sheet, [NotNull] ICellStyle boldCellStyle)
         {
-            var timeCellStyle = wb.CreateCellStyle();
-            var format = wb.CreateDataFormat();
-            timeCellStyle.DataFormat = format.GetFormat("HH:mm:ss");
-            return timeCellStyle;
-        }
-
-        private static void CreateSummary([NotNull] ActivityReport report, [NotNull] ISheet sheet, int i, [NotNull] ICellStyle boldCellStyle)
-        {
-            var row = sheet.CreateRow(i + 1);
+            var row = sheet.CreateRow(0);
             var cell = row.CreateCell(0);
-            cell.SetCellValue(Texts.TotalWorking);
+
+            cell.SetCellValue(Texts.PeriodType);
             cell.CellStyle = boldCellStyle;
 
             cell = row.CreateCell(1);
-            cell.SetCellValue(report.TotalWorkingTime.ToPrettyFormat());
-            cell.CellStyle = boldCellStyle;
-            AutoSizeRow(row, sheet);
-
-            row = sheet.CreateRow(i + 2);
-            cell = row.CreateCell(0);
-            cell.SetCellValue(Texts.TotalLeisure);
+            cell.SetCellValue(Texts.Duration);
             cell.CellStyle = boldCellStyle;
 
-            cell = row.CreateCell(1);
-            cell.SetCellValue(report.TotalLeisureTime.ToPrettyFormat());
+            cell = row.CreateCell(2);
+            cell.SetCellValue(Texts.Start);
+            cell.CellStyle = boldCellStyle;
+
+            cell = row.CreateCell(3);
+            cell.SetCellValue(Texts.End);
             cell.CellStyle = boldCellStyle;
             AutoSizeRow(row, sheet);
         }
@@ -131,35 +130,36 @@ namespace ActiveTimeTracker.Core
             AutoSizeRow(row, sheet);
         }
 
-        private static void CreateHeader([NotNull] ISheet sheet, [NotNull] ICellStyle boldCellStyle)
+        private static void CreateSummary([NotNull] ActivityReport report, [NotNull] ISheet sheet, int i, [NotNull] ICellStyle boldCellStyle)
         {
-            var row = sheet.CreateRow(0);
+            var row = sheet.CreateRow(i + 1);
             var cell = row.CreateCell(0);
-
-            cell.SetCellValue(Texts.PeriodType);
+            cell.SetCellValue(Texts.TotalWorking);
             cell.CellStyle = boldCellStyle;
 
             cell = row.CreateCell(1);
-            cell.SetCellValue(Texts.Duration);
+            cell.SetCellValue(report.TotalWorkingTime.ToPrettyFormat());
+            cell.CellStyle = boldCellStyle;
+            AutoSizeRow(row, sheet);
+
+            row = sheet.CreateRow(i + 2);
+            cell = row.CreateCell(0);
+            cell.SetCellValue(Texts.TotalLeisure);
             cell.CellStyle = boldCellStyle;
 
-            cell = row.CreateCell(2);
-            cell.SetCellValue(Texts.Start);
-            cell.CellStyle = boldCellStyle;
-
-            cell = row.CreateCell(3);
-            cell.SetCellValue(Texts.End);
+            cell = row.CreateCell(1);
+            cell.SetCellValue(report.TotalLeisureTime.ToPrettyFormat());
             cell.CellStyle = boldCellStyle;
             AutoSizeRow(row, sheet);
         }
 
-        private static void AutoSizeRow([NotNull] IRow row, [NotNull] ISheet sheet)
+        [NotNull]
+        private static ICellStyle CreateTimeCellStyle([NotNull] IWorkbook wb)
         {
-            var numberOfColumns = row.PhysicalNumberOfCells;
-            for (var i = 0; i <= numberOfColumns; i++)
-            {
-                sheet.AutoSizeColumn(i);
-            }
+            var timeCellStyle = wb.CreateCellStyle();
+            var format = wb.CreateDataFormat();
+            timeCellStyle.DataFormat = format.GetFormat("HH:mm:ss");
+            return timeCellStyle;
         }
     }
 }

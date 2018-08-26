@@ -20,12 +20,16 @@ namespace ActiveTimeTracker.ViewModel
         private readonly ActivityReport _report;
 
         [NotNull]
-        private readonly DispatcherTimer _timer;
-
-        [NotNull]
         private readonly IStatusChangeEventRepository _statusChangeEventRepository;
 
-        public TimeInfoViewModel([NotNull] ILog logger, [NotNull] IActivityProcessor activityProcessor, [NotNull] IReportSerializer reportSerializer, [NotNull] IStatusChangeEventRepository statusChangeEventRepository)
+        [NotNull]
+        private readonly DispatcherTimer _timer;
+
+        public TimeInfoViewModel(
+            [NotNull] ILog logger,
+            [NotNull] IActivityProcessor activityProcessor,
+            [NotNull] IReportSerializer reportSerializer,
+            [NotNull] IStatusChangeEventRepository statusChangeEventRepository)
         {
             _statusChangeEventRepository = statusChangeEventRepository ?? throw new ArgumentNullException(nameof(statusChangeEventRepository));
             activityProcessor = activityProcessor ?? throw new ArgumentNullException(nameof(activityProcessor));
@@ -48,15 +52,15 @@ namespace ActiveTimeTracker.ViewModel
             _timer.Tick += Timer_Tick;
         }
 
-        public TimeSpan TotalWorkingTimeForToday { get; private set; }
-
-        public TimeSpan TotalLeisureTimeForToday { get; private set; }
-
         [NotNull]
         public ObservableCollection<ActivityReportItemViewModel> ActivityReportItems { get; } = new ObservableCollection<ActivityReportItemViewModel>();
 
         [NotNull]
         public ICommand ToggleCommand { get; }
+
+        public TimeSpan TotalLeisureTimeForToday { get; private set; }
+
+        public TimeSpan TotalWorkingTimeForToday { get; private set; }
 
         public void Dispose()
         {
@@ -82,7 +86,7 @@ namespace ActiveTimeTracker.ViewModel
                 throw new ArgumentNullException(nameof(item));
             }
 
-            //Should not be able to suppress 08:00:00 start event - with no Id (it's a rare ocasion - so just hide the button)
+            // Should not be able to suppress 08:00:00 start event - with no Id (it's a rare ocasion - so just hide the button)
             var startEvent = _statusChangeEventRepository.GetById(item.StartEventId);
             startEvent.IsSuppressed = !startEvent.IsSuppressed;
             _statusChangeEventRepository.Update(startEvent);

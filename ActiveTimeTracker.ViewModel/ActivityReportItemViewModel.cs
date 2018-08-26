@@ -23,11 +23,16 @@ namespace ActiveTimeTracker.ViewModel
             IsSuppressed = item.IsSuppressed;
         }
 
-        public PeriodType PeriodType { get; }
-        public DateTime Start { get; }
         public DateTime? End { get; }
-        public int StartEventId { get; }
-        public TimeSpan? Period { get; }
+
         public bool IsSuppressed { get; set; }
+
+        public TimeSpan? Period { get; }
+
+        public PeriodType PeriodType { get; }
+
+        public DateTime Start { get; }
+
+        public int StartEventId { get; }
     }
 }

@@ -116,12 +116,12 @@
                     <StackPanel
                         commonView:MarginSetter.Margin="15">
                         <TextBlock
-                        Foreground="Black"
-                        FontWeight="Bold"
-                        FontSize="{StaticResource BigFontSize}"
-                        Text="{lex:Loc ActiveTimeTracker.Resources:Texts:Title}" />
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            FontSize="{StaticResource BigFontSize}"
+                            Text="{lex:Loc ActiveTimeTracker.Resources:Texts:Title}" />
                         <view:TimeInfoControl
-                    DataContext="{Binding TimeInfoViewModel, Mode=OneWay}" />
+                            DataContext="{Binding TimeInfoViewModel, Mode=OneWay}" />
                     </StackPanel>
                 </Border>
             </tb:TaskbarIcon.TrayToolTip>

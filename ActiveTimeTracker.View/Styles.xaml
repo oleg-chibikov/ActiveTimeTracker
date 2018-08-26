@@ -101,8 +101,7 @@
 
     <Style
         TargetType="controls:SelectableTextBlock"
-        BasedOn="{StaticResource {x:Type TextBlock}}">
-    </Style>
+        BasedOn="{StaticResource {x:Type TextBlock}}" />
 
     <Style
         TargetType="TextBox"

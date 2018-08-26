@@ -22,7 +22,8 @@ namespace ActiveTimeTracker.Installer
                 .LaunchAfterInstallation(fileName)
                 .WithProcessTermination(fileName)
                 .Build();
-            //TODO: Start Menu Icon
+
+            // TODO: Start Menu Icon
         }
     }
 }

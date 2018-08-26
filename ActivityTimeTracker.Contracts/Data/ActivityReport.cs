@@ -7,6 +7,7 @@ namespace ActivityTimeTracker.Contracts.Data
     public sealed class ActivityReport
     {
         private readonly TimeSpan _totalLeisureTime;
+
         private readonly TimeSpan _totalWorkingTime;
 
         public ActivityReport(ICollection<ActivityReportItem> items, DateTime reportDate)
@@ -19,11 +20,16 @@ namespace ActivityTimeTracker.Contracts.Data
 
         public ICollection<ActivityReportItem> Items { get; }
 
-        public TimeSpan TotalWorkingTime => GetTimeToCurrent(_totalWorkingTime, PeriodType.Working);
+        public DateTime ReportDate { get; }
 
         public TimeSpan TotalLeisureTime => GetTimeToCurrent(_totalLeisureTime, PeriodType.Leisure);
 
-        public DateTime ReportDate { get; }
+        public TimeSpan TotalWorkingTime => GetTimeToCurrent(_totalWorkingTime, PeriodType.Working);
+
+        private TimeSpan GetTime(PeriodType periodType)
+        {
+            return Items.Where(x => x.PeriodType == periodType).Aggregate(TimeSpan.Zero, (x, y) => y.Period != null ? x + y.Period.Value : x);
+        }
 
         private TimeSpan GetTimeToCurrent(TimeSpan time, PeriodType periodType)
         {
@@ -37,11 +43,6 @@ namespace ActivityTimeTracker.Contracts.Data
             }
 
             return time;
-        }
-
-        private TimeSpan GetTime(PeriodType periodType)
-        {
-            return Items.Where(x => x.PeriodType == periodType).Aggregate(TimeSpan.Zero, (x, y) => y.Period != null ? x + y.Period.Value : x);
         }
     }
 }

@@ -54,14 +54,6 @@ namespace ActiveTimeTracker.ViewModel
             EditPeriodsCommand = new AsyncCorrelationCommand(EditPeriodsAsync);
         }
 
-        [CanBeNull]
-        public TimeInfoViewModel TimeInfoViewModel { get; private set; }
-
-        [NotNull]
-        public ICommand OpenSettingsFolderCommand { get; }
-
-        [NotNull]
-        public ICommand ViewLogsCommand { get; }
         [NotNull]
         public ICommand EditPeriodsCommand { get; }
 
@@ -69,13 +61,22 @@ namespace ActiveTimeTracker.ViewModel
         public ICommand ExitCommand { get; }
 
         [NotNull]
+        public ICommand OpenSettingsFolderCommand { get; }
+
+        [NotNull]
         public ICommand SaveReportCommand { get; }
+
+        [CanBeNull]
+        public TimeInfoViewModel TimeInfoViewModel { get; private set; }
 
         [NotNull]
         public ICommand ToolTipCloseCommand { get; }
 
         [NotNull]
         public ICommand ToolTipOpenCommand { get; }
+
+        [NotNull]
+        public ICommand ViewLogsCommand { get; }
 
         private static void OpenSettingsFolder()
         {
@@ -87,13 +88,11 @@ namespace ActiveTimeTracker.ViewModel
             Process.Start($@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Scar\ActiveTimeTracker\Logs\Full.log");
         }
 
-        private void SaveReport()
+        [NotNull]
+        private async Task EditPeriodsAsync()
         {
-            _logger.Trace("Saving report...");
-            var report = _activityProcessor.GenerateReport(DateTime.Now);
-            var reportPath = _reportSerializer.SerializeReport(report);
-            Process.Start(reportPath);
-            _logger.Info("Report is saved");
+            _logger.Trace("Showing edit periods window...");
+            await _timeInfoWindowFactory.ShowWindowAsync(CancellationToken.None).ConfigureAwait(false);
         }
 
         private void Exit()
@@ -102,11 +101,13 @@ namespace ActiveTimeTracker.ViewModel
             Application.Current.Shutdown();
         }
 
-        [NotNull]
-        private async Task EditPeriodsAsync()
+        private void SaveReport()
         {
-            _logger.Trace("Showing edit periods window...");
-            await _timeInfoWindowFactory.ShowWindowAsync(CancellationToken.None).ConfigureAwait(false);
+            _logger.Trace("Saving report...");
+            var report = _activityProcessor.GenerateReport(DateTime.Now);
+            var reportPath = _reportSerializer.SerializeReport(report);
+            Process.Start(reportPath);
+            _logger.Info("Report is saved");
         }
 
         private void ToolTipClose()

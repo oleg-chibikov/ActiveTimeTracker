@@ -25,7 +25,10 @@ namespace ActiveTimeTracker.Core
             var start = date.Date;
             var end = date.Date.AddDays(1);
             var todaysActivity = _statusChangeEventRepository.GetCreatedBetween(start, end).OrderBy(x => x.CreatedDate).Cast<StatusChangeEvent>().ToArray();
-            var lastStartWorkingEvent = new StatusChangeEvent{CreatedDate = start.AddHours(8)}; //assume that if first event of the Day is Lock/Logoff then the day was started at 8AM
+            var lastStartWorkingEvent = new StatusChangeEvent
+            {
+                CreatedDate = start.AddHours(8)
+            }; // assume that if first event of the Day is Lock/Logoff then the day was started at 8AM
 
             StatusChangeEvent lastStartLeisureEvent = null;
             var addLast = true;
